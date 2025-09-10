@@ -1,0 +1,137 @@
+/* Cyberpunk neon color palette */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000010;
+  color: #0ff;
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Placeholder background image with blur */
+#background {
+  background-image: url('placeholder-background.png'); /* Replace with your PNG */
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px) brightness(0.6);
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+}
+
+/* UI overlay sits above background */
+#ui-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  padding: 40px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Neon glowing title */
+#game-title {
+  font-size: 48px;
+  color: #ff00ff;
+  text-shadow:
+    0 0 5px #ff00ff,
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 40px #ff66ff,
+    0 0 80px #ff66ff;
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+/* Dialogue box styling */
+#dialogue-box {
+  background-color: rgba(0, 255, 255, 0.15);
+  border: 2px solid #ff00ff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 700px;
+  min-height: 120px;
+  font-size: 22px;
+  line-height: 1.4;
+  text-shadow: 0 0 3px #ff00ff;
+  color: #ff00ff;
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+/* Input area for player name */
+#input-area {
+  margin-bottom: 20px;
+}
+
+#player-name-input {
+  font-size: 20px;
+  padding: 8px;
+  width: 280px;
+  border: 2px solid #ff66ff;
+  border-radius: 8px;
+  background: #001f2f;
+  color: #ff66ff;
+  outline: none;
+  text-shadow: 0 0 2px #ff66ff;
+}
+
+#player-name-input::placeholder {
+  color: #ff66ff;
+  opacity: 0.6;
+}
+
+#start-button {
+  margin-left: 10px;
+  font-size: 20px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: none;
+  color: #000;
+  background: #ff00ff;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px #ff00ff,
+    0 0 15px #ff00ff;
+  transition: background 0.3s ease;
+}
+
+#start-button:hover {
+  background: #2a002a;
+}
+
+/* Choices container */
+#choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 700px;
+}
+
+.choice-button {
+  background: transparent;
+  border: 2px solid #ff00ff;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 20px;
+  color: #ff00ff;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  user-select: none;
+  text-align: center;
+  box-shadow: 0 0 8px #ff66ff;
+}
+
+.choice-button:hover {
+  background: #ff00ff;
+  color: #000;
+}

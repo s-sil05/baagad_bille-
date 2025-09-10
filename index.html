@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyberpunk Detective Story</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="game-container">
+    <div id="background"></div>
+    <div id="ui-overlay">
+      <h1 id="game-title">Neo-City Detective</h1>
+
+      <div id="dialogue-box">
+        <p id="dialogue-text">Welcome to Neo-City! Enter your detective name to begin.</p>
+      </div>
+
+      <div id="input-area">
+        <input type="text" id="player-name-input" placeholder="Your Name..." autocomplete="off" />
+        <button id="start-button">Start Game</button>
+      </div>
+
+      <div id="choices-container"></div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
