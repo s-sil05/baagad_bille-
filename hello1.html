@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyberpunk Detective Mystery</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  <style>
+    body { margin: 0; background: #111; color: #0f0; font-family: monospace; }
+    #nameInputContainer {
+      position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+      background: #222; padding: 20px; border-radius: 10px; text-align: center;
+    }
+    input { font-size: 18px; padding: 10px; width: 250px; border-radius: 5px; border: none; }
+    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div id="nameInputContainer">
+  <div>Enter your detective's name:</div>
+  <input type="text" id="playerName" placeholder="Name..." maxlength="20" />
+  <br />
+  <button onclick="startGame()">Start Game</button>
+</div>
+
+<script>
+  let playerName = '';
+
+  function startGame() {
+    const input = document.getElementById('playerName');
+    if (input.value.trim() === '') {
+      alert('Please enter a name to start.');
+      return;
+    }
+    playerName = input.value.trim();
+    document.getElementById('nameInputContainer').style.display = 'none';
+    initPhaserGame();
+  }
+
+  function initPhaserGame() {
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      backgroundColor: '#111111',
+      scene: {
+        preload: preload,
+        create: create,
+      }
+    };
+
+    let dialogueText;
+    let optionButtons = [];
+    let currentStep = 0;
+
+    const dialogueSteps = [
+      {
+        text: `Neo-City never sleeps. Neither do its secrets.\nTonight, you're on the case.\nYour name is ${playerName}, a detective with a sharp mind.\n\nLet the mystery begin...`,
+        options: [{ text: 'Continue', next: 1 }]
+      },
+      {
+        text: `You receive a message from Lena, your informant.\nShe says she has a lead but warns you to be careful.`,
+        options: [
+          { text: 'Meet Lena at the old warehouse', next: 2 },
+          { text: 'Ignore and investigate the lab', next: 3 }
+        ]
+      },
+      {
+        text: `You arrive at the warehouse. Lena's eyes dart nervously.\n"Lena, what do you have for me?"`,
+        options: [{ text: 'Ask about the AI researcher', next: 4 }]
+      },
+      {
+        text: `The lab is eerily quiet. Something feels off.\nAs you scan the room, an encrypted message flashes on your holo-watch.`,
+        options: [{ text: 'Decrypt the message', next: 5 }]
+      },
+      {
+        text: `"The researcher was onto something bigger than we thought," Lena whispers.\n"You need to dig deeper, but watch your back."`,
+        options: [{ text: 'Thank Lena and plan next move', next: 6 }]
+      },
+      {
+        text: `You start decrypting the message. It reveals a key to a secret server.\nYour investigation just got complicated.`,
+        options: [{ text: 'Proceed with caution', next: 6 }]
+      },
+      {
+        text: `What will you do next, Detective ${playerName}?`,
+        options: [
+          { text: 'Follow Lena’s lead', next: 'END' },
+          { text: 'Investigate the server alone', next: 'END' }
+        ]
+      }
+    ];
+
+    const game = new Phaser.Game(config);
+
+    function preload() {
+      // Load assets if needed
+    }
+
+    function clearOptions(scene) {
+      optionButtons.forEach(btn => btn.destroy());
+      optionButtons = [];
+    }
+
+    function create() {
+      const style = { font: '22px monospace', fill: '#0f0', wordWrap: { width: 780 } };
+      dialogueText = this.add.text(10, 50, '', style);
+
+      showDialogue(this, 0);
+    }
+
+    function showDialogue(scene, step) {
+      currentStep = step;
+      const dialogue = dialogueSteps[step];
+
+      dialogueText.setText(dialogue.text);
+      clearOptions(scene);
+
+      dialogue.options.forEach((option, index) => {
+        let btn = scene.add.text(10, 300 + index * 40, option.text, { font: '20px monospace', fill: '#0ff', backgroundColor: '#003300', padding: 5, fixedWidth: 400 });
+        btn.setInteractive({ useHandCursor: true });
+        btn.on('pointerdown', () => {
+          if (option.next === 'END') {
+            dialogueText.setText(`Thanks for playing, Detective ${playerName}. The story continues...`);
+            clearOptions(scene);
+          } else {
+            showDialogue(scene, option.next);
+          }
+        });
+        optionButtons.push(btn);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
