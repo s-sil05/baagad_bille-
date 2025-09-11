@@ -1,0 +1,74 @@
+document.getElementById('start-button').addEventListener('click', async () => {
+  const playerName = document.getElementById('player-name-input').value.trim();
+  const dialogueText = document.getElementById('dialogue-text');
+  const choicesContainer = document.getElementById('choices-container');
+
+  if (!playerName) {
+    dialogueText.textContent = "Please enter your detective name to begin.";
+    return;
+  }
+
+  dialogueText.textContent = "Thinking...";
+
+  try {
+    const prompt = `Detective named ${playerName} enters Neo-City. Start the story.`;
+    const response = await fetch('http://localhost:3000/generate-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+
+    if (!response.ok) {
+      dialogueText.textContent = `Error: ${response.status} ${response.statusText}`;
+      return;
+    }
+
+    const data = await response.json();
+    dialogueText.textContent = data.text || "No response from AI.";
+
+    choicesContainer.innerHTML = '';
+
+    // Fully defined example static options; replace or generate dynamically as needed
+    const options = [
+      "Explore the alley",
+      "Visit the detective's office",
+      "Talk to the informant"
+    ];
+
+    options.forEach(optionText => {
+      const button = document.createElement('button');
+      button.textContent = optionText;
+      button.addEventListener('click', () => handleChoice(optionText));
+      choicesContainer.appendChild(button);
+    });
+
+  } catch (error) {
+    dialogueText.textContent = 'Error communicating with AI server.';
+    console.error(error);
+  }
+});
+
+async function handleChoice(choice) {
+  const dialogueText = document.getElementById('dialogue-text');
+  const choicesContainer = document.getElementById('choices-container');
+
+  dialogueText.textContent = `You chose: ${choice}. Loading next...`;
+  choicesContainer.innerHTML = '';
+
+  try {
+    const response = await fetch('http://localhost:3000/generate-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: choice })
+    });
+
+    const data = await response.json();
+    dialogueText.textContent = data.text || "No response for this choice.";
+
+    // Optionally build new choices here based on AI response
+
+  } catch (error) {
+    dialogueText.textContent = 'Error communicating with AI server.';
+    console.error(error);
+  }
+}
